@@ -25,7 +25,21 @@ h1 {
 }
 
 i {
-    font-size: 25px;
+    font-size: 30px;
+}
+
+input[type="color"] {
+    border: none;
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    background-color: transparent;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border-radius: 50%;
+    border: solid black 1px;
 }
 
 .box-shadow {
@@ -39,6 +53,12 @@ i {
     padding-top: 80px;
 }
 
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .panel {
     background-color: var(--line);
     display: flex;
@@ -46,12 +66,14 @@ i {
     width: 100px;
     height: 600px;
     padding: 15px;
+    border-radius: 35px 0 0 35px;
 }
 
 .sketch-area {
     background-color: var(--line);
     width: 600px;
     height: 600px;
+    /* border-radius: 0 35px 35px 0; */
 }
 
 .btn {
@@ -61,28 +83,17 @@ i {
     margin-bottom: 15px;
 }
 
-input[type="color"] {
-    appearance: none;
-    top: 8px;
-    left: 8px;
-    border: none;
-    cursor: pointer;
+.pixel {
     width: 25px;
     height: 25px;
-    padding: 0;
-    background-color: transparent;
+    background-color: white;
+    border-right: solid grey 1px;
+    border-bottom: solid grey 1px;
 }
 
-input[type="color"]::-webkit-color-swatch {
-    border-radius: 50%;
-    border: solid black 2px;
-}
-
-.circle {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background-color: red;
-    position: relative;
-    z-index: 1;
+.grid {
+    flex-wrap: wrap;
+    padding: 15px;
+    width: 100%;
+    height: 100%;
 }
