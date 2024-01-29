@@ -34,15 +34,18 @@ i {
 
 .content {
     display: flex;
-    gap: 10px;
+    gap: 1px;
     justify-content: center;
     padding-top: 80px;
 }
 
 .panel {
     background-color: var(--line);
-    width: 270px;
+    display: flex;
+    flex-direction: column;
+    width: 100px;
     height: 600px;
+    padding: 15px;
 }
 
 .sketch-area {
@@ -55,21 +58,31 @@ i {
     width: 70px;
     height: 70px;
     border-radius: 35px;
+    margin-bottom: 15px;
 }
 
 input[type="color"] {
-    position: relative;
+    appearance: none;
+    top: 8px;
+    left: 8px;
     border: none;
-    border-radius: 35px;
-    padding: 35px;
-    z-index: 0;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    padding: 0;
+    background-color: transparent;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border-radius: 50%;
+    border: solid black 2px;
 }
 
 .circle {
     width: 70px;
     height: 70px;
-    border-radius: 35px;
+    border-radius: 50%;
     background-color: red;
-    position: absolute;
-    z-index: 2;
+    position: relative;
+    z-index: 1;
 }
