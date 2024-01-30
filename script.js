@@ -23,6 +23,7 @@ for(let i = 0; i < GRID_SIZE; i++){
                 }
             }
         })
+
         pixel.addEventListener('mousedown', e => {
             e.target.style.backgroundColor = color
         })
@@ -31,7 +32,47 @@ for(let i = 0; i < GRID_SIZE; i++){
         pixel.addEventListener('dragstart', e => {
             e.preventDefault()
         })
-
-        
     }
 }
+
+
+const btnDraw = document.querySelector('#btnDraw')
+const btnEraser = document.querySelector('#btnEraser')
+const btnDarken = document.querySelector('#btnDarken')
+const btnLighten = document.querySelector('#btnLighten')
+
+const drawButtonStatesElements = [btnDraw, btnEraser, btnDarken, btnLighten]
+let drawButtonStates = [true, false, false, false]
+
+drawButtonStatesElements.forEach( (elem, index) => {
+    elem.addEventListener('mousedown', event => {
+        drawButtonStatesElements.forEach( e => {
+            e.classList.remove('btn-highlight')
+        })
+        drawButtonStates = [false, false, false, false]
+        event.target.classList.add('btn-highlight')
+        drawButtonStates[index] = true
+    })
+})
+
+const pixels = document.querySelectorAll('.pixel')
+const btnReset = document.querySelector('#btnReset')
+btnReset.addEventListener('click', e => {
+    pixels.forEach(pixel => {
+        pixel.style.backgroundColor = "#ffffff" 
+    });
+})
+
+/*TODO: 
+    button toggle states
+    clearAll/reset button
+        -reset to default button states
+    pixlSKETCH logo
+        -pixelated font for 'pixl'
+        -grid background?
+    range meter for grid size
+    rainbow color changes rgb gradually for gradient effect
+    color picker
+    color fill
+    undo?
+*/

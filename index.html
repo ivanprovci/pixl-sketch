@@ -21,17 +21,38 @@
         <h1>SKETCH</h1>
         <div class="content">
             <div class="panel">
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary btn-highlight" id="btnDraw">
                     <i class="bi bi-pencil-fill"></i>
                 </button>
 
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-primary" id="btnEraser">
                     <i class="bi bi-eraser-fill"></i>
                 </button>
+
+                <button type="button" class="btn btn-primary" id="btnDarken">
+                    <div class="circleDarken unclickable"></div>
+                </button>
+
+                <button type="button" class="btn btn-primary " id="btnLighten">
+                    <div class="circleLighten unclickable"></div>
+                </button>
+
+                <hr>
 
                 <button class="btn btn-primary">
                     <input id="colorPicker" class="center" type="color" value="#000000">
                 </button>
+
+                <button type="button" class="btn btn-primary " id="btnRainbow">
+                    <div class="circleRainbow unclickable"></div>
+                </button>
+
+                <hr>
+
+                <button type="button" class="btn btn-primary" id="btnReset">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+
 
             </div>
             <div class="sketch-area">
