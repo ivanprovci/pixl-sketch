@@ -41,17 +41,14 @@ const btnEraser = document.querySelector('#btnEraser')
 const btnDarken = document.querySelector('#btnDarken')
 const btnLighten = document.querySelector('#btnLighten')
 
-const drawButtonStatesElements = [btnDraw, btnEraser, btnDarken, btnLighten]
-let drawButtonStates = [true, false, false, false]
+const drawButtons = [btnDraw, btnEraser, btnDarken, btnLighten]
 
-drawButtonStatesElements.forEach( (elem, index) => {
-    elem.addEventListener('mousedown', event => {
-        drawButtonStatesElements.forEach( e => {
-            e.classList.remove('btn-highlight')
+drawButtons.forEach( button => {
+    button.addEventListener('mousedown', event => {
+        drawButtons.forEach( button => {
+            button.classList.remove('btn-active')
         })
-        drawButtonStates = [false, false, false, false]
-        event.target.classList.add('btn-highlight')
-        drawButtonStates[index] = true
+        event.target.classList.add('btn-active')
     })
 })
 
@@ -67,12 +64,9 @@ btnReset.addEventListener('click', e => {
     button toggle states
     clearAll/reset button
         -reset to default button states
-    pixlSKETCH logo
-        -pixelated font for 'pixl'
-        -grid background?
     range meter for grid size
     rainbow color changes rgb gradually for gradient effect
-    color picker
+    color picker from existing pixel
     color fill
     undo?
 */
