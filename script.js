@@ -88,3 +88,26 @@ btnReset.addEventListener('click', e => {
     color fill
     undo?
 */
+
+//input comes in the form of #aabbcc
+//returns the same value but adds #010101 to it
+//range 00 to ff (for either red/green/blue)
+function increaseHex(input){
+    //remove the '#' char
+    input = input.substr(1)
+
+    input = parseInt(input, 16)
+    // input += 0x010101
+
+    input = input.toString(16)
+    while(input.length < 6){
+        input = '0' + input.substring(0)
+    }
+
+    return '#' + input.substring(0);
+
+}
+// color = '#010101'
+console.log(color)
+console.log(typeof(increaseHex(color)))
+console.log(increaseHex(color))
