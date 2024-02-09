@@ -18,14 +18,28 @@ for(let i = 0; i < GRID_SIZE; i++){
         //mouse1 is already being held when it enters the pixel
         pixel.addEventListener('mouseover', e => {
             if(e.buttons === 1) {
-                if(e.target.style.backgroundColor !== color){
+                if(drawButtonsActive == drawButtons[0]) {
                     e.target.style.backgroundColor = color
+                } else if (drawButtonsActive == drawButtons[1]){
+                    e.target.style.backgroundColor = "#ffffff"
+                } else if (drawButtonsActive == drawButtons[2]){
+                    //e.target.style.backgroundColor = "#ffffff"
+                } else if (drawButtonsActive == drawButtons[3]){
+                    //e.target.style.backgroundColor = "#ffffff"
                 }
             }
         })
 
         pixel.addEventListener('mousedown', e => {
-            e.target.style.backgroundColor = color
+            if(drawButtonsActive == drawButtons[0]) {
+                e.target.style.backgroundColor = color
+            } else if (drawButtonsActive == drawButtons[1]){
+                e.target.style.backgroundColor = "#ffffff"
+            } else if (drawButtonsActive == drawButtons[2]){
+                //e.target.style.backgroundColor = "#ffffff"
+            } else if (drawButtonsActive == drawButtons[3]){
+                //e.target.style.backgroundColor = "#ffffff"
+            }
         })
         
         //disables dragging the pixel element bug
@@ -36,19 +50,22 @@ for(let i = 0; i < GRID_SIZE; i++){
 }
 
 
-const btnDraw = document.querySelector('#btnDraw')
-const btnEraser = document.querySelector('#btnEraser')
-const btnDarken = document.querySelector('#btnDarken')
-const btnLighten = document.querySelector('#btnLighten')
 
-const drawButtons = [btnDraw, btnEraser, btnDarken, btnLighten]
+//[btnDraw, btnEraser, btnDarken, btnLighten]
+const drawButtons = document.querySelectorAll('.drawButtons button')
 
+//initialize active button
+let drawButtonsActive = drawButtons[0]
+drawButtonsActive.classList.add('btn-active')
+
+//add highlight class to draw buttons group
 drawButtons.forEach( button => {
     button.addEventListener('mousedown', event => {
-        drawButtons.forEach( button => {
-            button.classList.remove('btn-active')
-        })
-        event.target.classList.add('btn-active')
+        drawButtonsActive.classList.remove('btn-active')
+
+        //set new active button
+        drawButtonsActive = event.target
+        drawButtonsActive.classList.add('btn-active')
     })
 })
 
@@ -62,6 +79,7 @@ btnReset.addEventListener('click', e => {
 
 /*TODO: 
     button toggle states
+    if eraser is active and you change colors, set draw as active
     clearAll/reset button
         -reset to default button states
     range meter for grid size
