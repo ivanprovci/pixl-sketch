@@ -32,19 +32,19 @@ for(let i = 0; i < GRID_SIZE; i++){
         pixel.addEventListener('mouseover', e => {
             if(e.buttons === 1) {
                 //pen
-                if(drawButtonsActive == drawButtons[0]) {
+                if(activeDrawButton == drawButtons[0]) {
                     e.target.style.backgroundColor = color
                 } 
                 //eraser
-                else if (drawButtonsActive == drawButtons[1]){
+                else if (activeDrawButton == drawButtons[1]){
                     e.target.style.backgroundColor = "#ffffff"
                 } 
                 //darken
-                else if (drawButtonsActive == drawButtons[2]){
+                else if (activeDrawButton == drawButtons[2]){
                     e.target.style.backgroundColor = HSLDarken(RGBToHSL(e.target.style.backgroundColor))
                 } 
                 //lighten
-                else if (drawButtonsActive == drawButtons[3]){
+                else if (activeDrawButton == drawButtons[3]){
                     e.target.style.backgroundColor = HSLLighten(RGBToHSL(e.target.style.backgroundColor))
                 }
             }
@@ -52,19 +52,19 @@ for(let i = 0; i < GRID_SIZE; i++){
 
         pixel.addEventListener('mousedown', e => {
             //pen
-            if(drawButtonsActive == drawButtons[0]) {
+            if(activeDrawButton == drawButtons[0]) {
                 e.target.style.backgroundColor = color
             } 
             //eraser
-            else if (drawButtonsActive == drawButtons[1]){
+            else if (activeDrawButton == drawButtons[1]){
                 e.target.style.backgroundColor = "#ffffff"
             } 
             //darken
-            else if (drawButtonsActive == drawButtons[2]){
+            else if (activeDrawButton == drawButtons[2]){
                 e.target.style.backgroundColor = HSLDarken(RGBToHSL(e.target.style.backgroundColor))
             } 
             //lighten
-            else if (drawButtonsActive == drawButtons[3]){
+            else if (activeDrawButton == drawButtons[3]){
                 e.target.style.backgroundColor = HSLLighten(RGBToHSL(e.target.style.backgroundColor))
             }
         })
@@ -82,27 +82,57 @@ for(let i = 0; i < GRID_SIZE; i++){
 const drawButtons = document.querySelectorAll('.drawButtons button')
 
 //initialize active button
-let drawButtonsActive = drawButtons[0]
-drawButtonsActive.classList.add('btn-active')
+let activeDrawButton = drawButtons[0]
+activeDrawButton.classList.add('btn-active')
 
 //add highlight class to draw buttons group
 drawButtons.forEach( button => {
     button.addEventListener('mousedown', event => {
-        drawButtonsActive.classList.remove('btn-active')
+        activeDrawButton.classList.remove('btn-active')
 
         //set new active button
-        drawButtonsActive = event.target
-        drawButtonsActive.classList.add('btn-active')
+        activeDrawButton = event.target
+        activeDrawButton.classList.add('btn-active')
     })
 })
 
-//reset button - reset all pixels to white
+
+//[btnColor, btnRainbow]
+const colorButtons = document.querySelectorAll(".colorButtons button")
+let activeColorButton = colorButtons[0]
+activeColorButton.classList.add("btn-active")
+
+colorButtons.forEach( button => {
+    button.addEventListener('mousedown', event => {
+        activeColorButton.classList.remove('btn-active')
+
+        //because the color picker input is clickable, .btn-active will highlight it instead of the button it's in.
+        //thus we add the class to its parent, which is the actual button
+        if(event.target.localName === "input"){
+            event.target.parentElement.classList.add('btn-active')
+            activeColorButton = event.target.parentElement
+        } else {
+            activeColorButton = event.target
+            activeColorButton.classList.add('btn-active')
+        }
+    })
+})
+
+//reset button - reset all pixels to white, reset buttons and color to initial values
 const pixels = document.querySelectorAll('.pixel')
 const btnReset = document.querySelector('#btnReset')
 btnReset.addEventListener('click', e => {
     pixels.forEach(pixel => {
         pixel.style.backgroundColor = "#ffffff" 
     });
+    activeColorButton.classList.remove('btn-active')
+    activeColorButton = colorButtons[0]
+    activeColorButton.classList.add('btn-active')
+
+    activeDrawButton.classList.remove('btn-active')
+    activeDrawButton = drawButtons[0]
+    activeDrawButton.classList.add('btn-active')
+    colorPicker.value = "#000000"
 })
 
 //darken by 10 percent
