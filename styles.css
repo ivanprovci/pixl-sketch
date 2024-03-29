@@ -1,6 +1,6 @@
 :root {
-    --bg-main: hsl(217, 54%, 11%);
-    --bg-secondary: hsl(216, 50%, 16%);
+    --bg-main: hsl(217, 54%, 8%);
+    --bg-secondary: hsl(216, 50%, 19%);
     --text: hsl(215, 51%, 70%);
     --line: hsl(215, 32%, 27%);
     --white: hsl(0, 0%, 100%);
@@ -10,7 +10,7 @@
 body {
     margin: 0;
     height: 100vh;
-    background-color: var(--bg-main);
+    background-image: radial-gradient(var(--bg-secondary), var(--bg-main));
 }
 
 h1 {
@@ -95,8 +95,8 @@ input[type="color"]::-webkit-color-swatch {
     width: 25px;
     height: 25px;
     background-color: white;
-    border-right: solid grey 1px;
-    border-bottom: solid grey 1px;
+    border-right: solid rgba(128, 128, 128, 0.2) 1px;
+    border-bottom: solid rgba(128, 128, 128, 0.2) 1px;
 }
 
 .grid {
