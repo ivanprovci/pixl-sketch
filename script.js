@@ -1,7 +1,5 @@
 /*TODO: 
     range meter for grid size
-    rainbow color changes rgb gradually for gradient effect
-    color picker from existing pixel
     color fill
     undo?
 */
@@ -24,7 +22,7 @@ function updateRainbowColor(hsl) {
 const colorPicker = document.querySelector('#colorPicker')
 
 const grid = document.querySelector(".grid")
-const GRID_SIZE = 32
+const GRID_SIZE = 16
 const GRID_WIDTH = grid.clientWidth - parseFloat(getComputedStyle(grid, null).getPropertyValue('padding'))*2
 for(let i = 0; i < GRID_SIZE; i++){
     for(let j = 0; j < GRID_SIZE; j++){
@@ -44,6 +42,15 @@ for(let i = 0; i < GRID_SIZE; i++){
 
         pixel.addEventListener('mousedown', e => {
             drawingLogic(e)
+
+            if(isEyedropperActive()){
+                colorPicker.value = RGBtoHex(e.target.style.backgroundColor)
+                activeColorButton = colorButtons[0]
+                activeColorButton.classList.add('btn-active')
+                activeDrawButton = drawButtons[0]
+                activeDrawButton.classList.add('btn-active')
+                eyedropper.classList.remove('btn-active')
+            }
         })
         
         //disables dragging the pixel element bug
@@ -65,6 +72,11 @@ activeDrawButton.classList.add('btn-active')
 //add highlight class to draw buttons group
 drawButtons.forEach( button => {
     button.addEventListener('mousedown', event => {
+        if(isEyedropperActive()){
+            //if eyedropper is active, active buttons are null, so reinitialize them to the default
+            resetBtnsToDefault()
+        }
+
         activeDrawButton.classList.remove('btn-active')
 
         //set new active button
@@ -108,6 +120,10 @@ activeColorButton.classList.add("btn-active")
 
 colorButtons.forEach( button => {
     button.addEventListener('mousedown', event => {
+        if(isEyedropperActive()){
+            //if eyedropper is active, active buttons are null, so reinitialize them to the default
+            resetBtnsToDefault()
+        }
         activeColorButton.classList.remove('btn-active')
 
         //because the color picker input is clickable, .btn-active will highlight it instead of the button it's in.
@@ -120,7 +136,7 @@ colorButtons.forEach( button => {
             activeColorButton.classList.add('btn-active')
         }
 
-        //when a color is selected/changed, change the active draw button to the pencil for better UI
+        //when a color is selected/changed, change the active draw button to the pencil for better UX
         activeDrawButton.classList.remove('btn-active')
         activeDrawButton = drawButtons[0]
         activeDrawButton.classList.add('btn-active')
@@ -134,6 +150,12 @@ btnReset.addEventListener('click', e => {
     pixels.forEach(pixel => {
         pixel.style.backgroundColor = "#ffffff" 
     });
+
+    if(isEyedropperActive()){
+        //if eyedropper is active, active buttons are null, so reinitialize them to the default
+        resetBtnsToDefault()
+    }
+    
     activeColorButton.classList.remove('btn-active')
     activeColorButton = colorButtons[0]
     activeColorButton.classList.add('btn-active')
@@ -143,7 +165,32 @@ btnReset.addEventListener('click', e => {
     activeDrawButton.classList.add('btn-active')
     colorPicker.value = "#000000"
     rainbowColor = "hsl(0,100%,50%)"
+    eyedropper.classList.remove('btn-active')
 })
+
+
+const eyedropper = document.querySelector('#eyedropper')
+eyedropper.addEventListener('click', e => {
+    e.target.classList.add('btn-active')
+
+    //if the eyedropper button is clicked while it's already selected, do not try to access active buttons because they're set to null
+    if(activeColorButton !== null || activeDrawButton !== null){
+        activeColorButton.classList.remove('btn-active')
+        activeDrawButton.classList.remove('btn-active')
+        activeColorButton = null
+        activeDrawButton = null
+    }
+
+})
+
+const isEyedropperActive = () => eyedropper.classList.contains("btn-active")
+function resetBtnsToDefault() {
+    activeColorButton = colorButtons[0]
+    activeColorButton.classList.add('btn-active')
+    activeDrawButton = drawButtons[0]
+    activeDrawButton.classList.add('btn-active')
+    eyedropper.classList.remove('btn-active')
+}
 
 //darken by 5 percent
 function HSLDarken(hsl) {
@@ -278,4 +325,16 @@ function HSLToRGB(hsl) {
     b = Math.round((b + m) * 255);
 
     return "rgb(" + r + "," + g + "," + b + ")";
+}
+
+function RGBtoHex(rgb){
+    let output = "#"
+    rgb = rgb.substr(4).split(")")[0].split(", ");
+
+    rgb.forEach(value => {
+        let hex = parseInt(value).toString(16)
+        output += (hex.length == 1 ? "0" + hex : hex)
+    })
+
+    return output
 }
