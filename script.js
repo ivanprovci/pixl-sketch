@@ -1,8 +1,4 @@
 /*TODO: 
-    button toggle states
-    if eraser is active and you change colors, set draw as active
-    clearAll/reset button
-        -reset to default button states
     range meter for grid size
     rainbow color changes rgb gradually for gradient effect
     color picker from existing pixel
@@ -10,11 +6,22 @@
     undo?
 */
 
+//default value
+let rainbowColor = "hsl(0,100%,50%)"
+
+function updateRainbowColor(hsl) {
+    const PERCENT_CHANGE = 2
+
+    //split the string hsl input into an array hsl = [hue,saturation,lightness]
+    let sep = hsl.indexOf(",") > -1 ? "," : " ";
+    hsl = hsl.substr(4).split(")")[0].split(sep);
+
+    //increment the hue, and mod it by 360 since that is the max hue value
+    return "hsl(" + (parseInt(hsl[0]) + PERCENT_CHANGE) % 360 + "," + hsl[1] + "," + hsl[2] + ")";
+    
+}
+
 const colorPicker = document.querySelector('#colorPicker')
-let color = colorPicker.value
-colorPicker.addEventListener('input', (e) => {
-    color = e.target.value
-})
 
 const grid = document.querySelector(".grid")
 const GRID_SIZE = 32
@@ -31,42 +38,12 @@ for(let i = 0; i < GRID_SIZE; i++){
         //mouse1 is already being held when it enters the pixel
         pixel.addEventListener('mouseover', e => {
             if(e.buttons === 1) {
-                //pen
-                if(activeDrawButton == drawButtons[0]) {
-                    e.target.style.backgroundColor = color
-                } 
-                //eraser
-                else if (activeDrawButton == drawButtons[1]){
-                    e.target.style.backgroundColor = "#ffffff"
-                } 
-                //darken
-                else if (activeDrawButton == drawButtons[2]){
-                    e.target.style.backgroundColor = HSLDarken(RGBToHSL(e.target.style.backgroundColor))
-                } 
-                //lighten
-                else if (activeDrawButton == drawButtons[3]){
-                    e.target.style.backgroundColor = HSLLighten(RGBToHSL(e.target.style.backgroundColor))
-                }
+                drawingLogic(e)
             }
         })
 
         pixel.addEventListener('mousedown', e => {
-            //pen
-            if(activeDrawButton == drawButtons[0]) {
-                e.target.style.backgroundColor = color
-            } 
-            //eraser
-            else if (activeDrawButton == drawButtons[1]){
-                e.target.style.backgroundColor = "#ffffff"
-            } 
-            //darken
-            else if (activeDrawButton == drawButtons[2]){
-                e.target.style.backgroundColor = HSLDarken(RGBToHSL(e.target.style.backgroundColor))
-            } 
-            //lighten
-            else if (activeDrawButton == drawButtons[3]){
-                e.target.style.backgroundColor = HSLLighten(RGBToHSL(e.target.style.backgroundColor))
-            }
+            drawingLogic(e)
         })
         
         //disables dragging the pixel element bug
@@ -96,6 +73,33 @@ drawButtons.forEach( button => {
     })
 })
 
+function drawingLogic(e){
+    //pen
+    if(activeDrawButton == drawButtons[0]) {
+        //color picker
+        if(activeColorButton == colorButtons[0]) {
+            e.target.style.backgroundColor = colorPicker.value
+        }
+        //rainbow colors
+        else {
+            e.target.style.backgroundColor = rainbowColor
+            rainbowColor = updateRainbowColor(rainbowColor)
+        }
+    } 
+    //eraser
+    else if (activeDrawButton == drawButtons[1]){
+        e.target.style.backgroundColor = "#ffffff"
+    } 
+    //darken
+    else if (activeDrawButton == drawButtons[2]){
+        e.target.style.backgroundColor = HSLDarken(RGBToHSL(e.target.style.backgroundColor))
+    } 
+    //lighten
+    else if (activeDrawButton == drawButtons[3]){
+        e.target.style.backgroundColor = HSLLighten(RGBToHSL(e.target.style.backgroundColor))
+    }
+}
+
 
 //[btnColor, btnRainbow]
 const colorButtons = document.querySelectorAll(".colorButtons button")
@@ -115,10 +119,15 @@ colorButtons.forEach( button => {
             activeColorButton = event.target
             activeColorButton.classList.add('btn-active')
         }
+
+        //when a color is selected/changed, change the active draw button to the pencil for better UI
+        activeDrawButton.classList.remove('btn-active')
+        activeDrawButton = drawButtons[0]
+        activeDrawButton.classList.add('btn-active')
     })
 })
 
-//reset button - reset all pixels to white, reset buttons and color to initial values
+//reset button - reset all pixels to white, reset buttons and colors to initial values
 const pixels = document.querySelectorAll('.pixel')
 const btnReset = document.querySelector('#btnReset')
 btnReset.addEventListener('click', e => {
@@ -133,9 +142,10 @@ btnReset.addEventListener('click', e => {
     activeDrawButton = drawButtons[0]
     activeDrawButton.classList.add('btn-active')
     colorPicker.value = "#000000"
+    rainbowColor = "hsl(0,100%,50%)"
 })
 
-//darken by 10 percent
+//darken by 5 percent
 function HSLDarken(hsl) {
     let sep = hsl.indexOf(",") > -1 ? "," : " ";
     hsl = hsl.substr(4).split(")")[0].split(sep);
@@ -145,11 +155,11 @@ function HSLDarken(hsl) {
         l = hsl[2].substr(0,hsl[2].length - 1) ;
 
     l = l > 5 ? parseFloat(l) - 5 : parseFloat(l);
-    
+
     return "hsl(" + h + "," + s + "%," + l + "%)";
 }
 
-//increase lightness by 10 percent
+//increase lightness by 5 percent
 function HSLLighten(hsl) {
     let sep = hsl.indexOf(",") > -1 ? "," : " ";
     hsl = hsl.substr(4).split(")")[0].split(sep);
