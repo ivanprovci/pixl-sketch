@@ -12,6 +12,7 @@ body {
     margin: 0;
     height: 100vh;
     background-image: radial-gradient(var(--bg-secondary), var(--bg-main));
+    background-attachment: fixed;
 }
 
 i {
@@ -39,13 +40,11 @@ input[type="color"]::-webkit-color-swatch {
 }
 
 footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
     display: flex;
     flex-direction: column;
     width: 100%;
     margin-bottom: 10px;
+    margin-top: 30px;
 }
 
 footer p{
@@ -53,8 +52,8 @@ footer p{
 }
 
 .logo {
-    width: 380px;
-    height: 198px;
+    width: 320px;
+    height: 160px;
     margin: 40px;
 }
 
@@ -66,7 +65,7 @@ footer p{
     display: flex;
     gap: 1px;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 35px;
 }
 
 .center {
@@ -78,15 +77,15 @@ footer p{
 .panel {
     background-color: var(--line);
     width: 185px;
-    height: 600px;
+    height: 540px;
     padding: 15px;
     border-radius: 35px 0 0 35px;
 }
 
 .sketch-area {
     background-color: var(--line);
-    width: 600px;
-    height: 600px;
+    width: 540px;
+    height: 540px;
 }
 
 .btn {
@@ -97,8 +96,6 @@ footer p{
 }
 
 .pixel {
-    width: 25px;
-    height: 25px;
     background-color: white;
     border-right: solid rgba(128, 128, 128, 0.2) 1px;
     border-bottom: solid rgba(128, 128, 128, 0.2) 1px;
