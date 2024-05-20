@@ -338,3 +338,8 @@ function RGBtoHex(rgb){
 
     return output
 }
+
+const logo = document.querySelector(".logo")
+logo.addEventListener( 'dragstart', (e) => {
+    e.preventDefault()
+})
